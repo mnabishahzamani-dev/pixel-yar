@@ -1,0 +1,80 @@
+{
+  "name": "pixel-yar",
+  "productName": "Pixel Yar",
+  "version": "1.0.2",
+  "description": "پیکسل یار — تبدیل دسته‌ای تصویر به WebP با کنترل کیفیت، ابعاد و حریم خصوصی",
+  "main": "main.js",
+  "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mnabishahzamani-dev/pixel-yar.git"
+  },
+  "homepage": "https://github.com/mnabishahzamani-dev/pixel-yar#readme",
+  "bugs": {
+    "url": "https://github.com/mnabishahzamani-dev/pixel-yar/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": {
+    "name": "mnabishahzamani",
+    "email": "mnabishahzamani@gmail.com"
+  },
+  "copyright": "Copyright © 2026 mnabishahzamani",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "com.mnabishahzamani.pixelyar",
+    "productName": "Pixel Yar",
+    "copyright": "Copyright © 2026 mnabishahzamani",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "lib/**/*",
+      "src/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/@img/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "پیکسل یار",
+      "artifactName": "PixelYar-Setup-${version}.exe",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "dependencies": {
+    "bmp-js": "^0.1.0",
+    "sharp": "^0.35.5"
+  }
+}

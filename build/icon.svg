@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="پیکسل یار">
+  <defs>
+    <linearGradient id="tile" x1="72" y1="28" x2="448" y2="492" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd36e" />
+      <stop offset="0.36" stop-color="#ff9ec4" />
+      <stop offset="0.7" stop-color="#c39bff" />
+      <stop offset="1" stop-color="#8b8bff" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(112 72) rotate(47) scale(440)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.62" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="sky" x1="146" y1="134" x2="370" y2="298" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff9f0" />
+      <stop offset="1" stop-color="#ffeef7" />
+    </linearGradient>
+    <linearGradient id="hillBack" x1="170" y1="222" x2="350" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b9adff" />
+      <stop offset="1" stop-color="#8c7bff" />
+    </linearGradient>
+    <linearGradient id="hillFront" x1="170" y1="252" x2="350" y2="302" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffbc86" />
+      <stop offset="1" stop-color="#ff8fb9" />
+    </linearGradient>
+    <linearGradient id="dot" x1="200" y1="350" x2="320" y2="386" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" />
+      <stop offset="1" stop-color="#fff4ff" />
+    </linearGradient>
+    <clipPath id="photoClip">
+      <rect x="146" y="134" width="224" height="164" rx="38" />
+    </clipPath>
+  </defs>
+
+  <rect width="512" height="512" rx="120" fill="url(#tile)" />
+  <rect width="512" height="512" rx="120" fill="url(#glow)" />
+  <rect x="3" y="3" width="506" height="506" rx="117" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="3" />
+
+  <rect x="116" y="104" width="284" height="224" rx="58" fill="#fffdf9" fill-opacity="0.97" />
+  <rect x="138" y="126" width="240" height="180" rx="46" fill="url(#sky)" />
+
+  <g clip-path="url(#photoClip)">
+    <rect x="146" y="134" width="224" height="164" fill="url(#sky)" />
+    <circle cx="316" cy="178" r="22" fill="#ffd36e" />
+    <circle cx="316" cy="178" r="33" fill="#ffe8a8" fill-opacity="0.45" />
+
+    <path
+      d="M146 264h30v-16h24v-20h26v20h24v16h26v-30h26v30h24v-16h24v16h20v50H146z"
+      fill="url(#hillBack)"
+    />
+    <path
+      d="M146 298h22v-22h24v-16h26v16h22v16h24v-18h24v-16h26v16h22v22h24v-18h24v18h20v14H146z"
+      fill="url(#hillFront)"
+    />
+
+    <rect x="172" y="160" width="24" height="10" rx="5" fill="#ffffff" fill-opacity="0.82" />
+    <rect x="184" y="148" width="10" height="24" rx="5" fill="#ffffff" fill-opacity="0.82" />
+    <rect x="232" y="182" width="14" height="14" rx="4" fill="#ffffff" fill-opacity="0.62" />
+    <rect x="250" y="196" width="9" height="9" rx="3" fill="#ffffff" fill-opacity="0.44" />
+  </g>
+
+  <rect x="116" y="104" width="284" height="224" rx="58" fill="none" stroke="#ffffff" stroke-opacity="0.72" stroke-width="5" />
+
+  <g fill="url(#dot)">
+    <rect x="200" y="354" width="26" height="26" rx="9" />
+    <rect x="243" y="348" width="32" height="32" rx="11" />
+    <rect x="292" y="354" width="26" height="26" rx="9" />
+  </g>
+
+  <path
+    d="M398 118c4 18 10 24 28 28-18 4-24 10-28 28-4-18-10-24-28-28 18-4 24-10 28-28Z"
+    fill="#ffffff"
+    fill-opacity="0.92"
+  />
+  <path
+    d="M94 318c2.5 11 6 14.5 17 17-11 2.5-14.5 6-17 17-2.5-11-6-14.5-17-17 11-2.5 14.5-6 17-17Z"
+    fill="#ffffff"
+    fill-opacity="0.58"
+  />
+</svg>

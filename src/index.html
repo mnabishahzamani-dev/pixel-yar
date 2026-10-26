@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' blob: data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>پیکسل یار — تبدیل تصویر به WebP</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true">
+      <span class="orb orb--violet"></span>
+      <span class="orb orb--peach"></span>
+      <span class="orb orb--mint"></span>
+      <span class="ambient__grain"></span>
+    </div>
+
+    <div class="app" id="app">
+      <header class="titlebar">
+        <div class="brand">
+          <img class="brand__logo" src="assets/logo.svg" alt="" />
+          <div class="brand__text">
+            <strong>پیکسل یار</strong>
+            <span>استودیوی سبک‌کردن تصویر</span>
+          </div>
+        </div>
+
+        <span class="offline-chip">
+          <span class="offline-chip__dot"></span>
+          پردازش کاملاً آفلاین
+        </span>
+
+        <div class="win-controls" aria-label="کنترل‌های پنجره">
+          <button class="win-btn" type="button" data-win="minimize" aria-label="کوچک کردن پنجره" title="کوچک کردن">
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6h8" /></svg>
+          </button>
+          <button class="win-btn" type="button" data-win="maximize" aria-label="بزرگ کردن پنجره" title="بزرگ کردن">
+            <svg class="win-icon-max" viewBox="0 0 12 12" aria-hidden="true">
+              <rect x="2.4" y="2.4" width="7.2" height="7.2" rx="1.2" />
+            </svg>
+            <svg class="win-icon-restore" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M4.3 4.2V3a.8.8 0 0 1 .8-.8h4.1a.8.8 0 0 1 .8.8v4.1a.8.8 0 0 1-.8.8H8" />
+              <rect x="1.9" y="4.2" width="6" height="6" rx="1.2" />
+            </svg>
+          </button>
+          <button class="win-btn win-btn--close" type="button" data-win="close" aria-label="بستن پنجره" title="بستن">
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2.7 2.7 6.6 6.6M9.3 2.7 2.7 9.3" /></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="workspace" aria-label="میز کار تبدیل تصویر">
+          <div class="empty-view card" id="emptyView">
+            <div class="empty__art" aria-hidden="true">
+              <span class="empty__halo"></span>
+              <img class="empty__logo" src="assets/logo.svg" alt="" />
+              <span class="empty__spark empty__spark--a"></span>
+              <span class="empty__spark empty__spark--b"></span>
+              <span class="empty__spark empty__spark--c"></span>
+            </div>
+
+            <span class="eyebrow"><span class="eyebrow__dot"></span> ساده، دقیق، روی سیستم خودت</span>
+            <h1 class="empty__title">تصویرِ سنگین را <span class="text-gradient">سبک</span> کن</h1>
+            <p class="empty__sub">
+              کیفیت را نگه می‌داریم و حجم WebP را دقیقاً همان‌قدر که می‌خواهی می‌کنیم؛
+              بدون آپلود، بدون اینترنت.
+            </p>
+
+            <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="انتخاب یا رها کردن تصویر">
+              <span class="dropzone__icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none">
+                  <path d="M16 22V7m0 0-5.5 5.5M16 7l5.5 5.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M6 19.5v3A3.5 3.5 0 0 0 9.5 26h13a3.5 3.5 0 0 0 3.5-3.5v-3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="dropzone__title">تصاویر را اینجا رها کن</span>
+              <span class="dropzone__text">یا برای <span class="dropzone__link">انتخاب از سیستم</span> کلیک کن</span>
+              <span class="formats">PNG · JPG · WebP · GIF · BMP · TIFF · AVIF</span>
+            </div>
+
+            <div class="empty__features">
+              <span class="feature">
+                <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M9 2.7 14.3 5v3.3c0 3.2-2.1 5-5.3 6.2-3.2-1.2-5.3-3-5.3-6.2V5L9 2.7Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" />
+                  <path d="m6.6 8.6 1.7 1.8 3.3-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                حریم خصوصی کامل
+              </span>
+              <span class="feature">
+                <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <rect x="2.7" y="3.2" width="12.6" height="11.6" rx="3" stroke="currentColor" stroke-width="1.3" />
+                  <path d="M6 11.7h6M6 8.8h6M6 5.9h3.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+                دسته‌ای تا ۳۰ تصویر
+              </span>
+              <span class="feature">
+                <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M4 12.8V9.7m3.3 3.1V6.4M10.7 12.8V8.2M14 12.8V5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M2.7 15h12.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+                حجم دقیق و قابل کنترل
+              </span>
+            </div>
+          </div>
+
+          <div class="workspace-view" id="workspaceView" hidden>
+            <div class="banner" id="staleBanner" hidden>
+              <span class="banner__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path d="M10 6.2v4.4M10 13.6v.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  <circle cx="10" cy="10" r="7.1" stroke="currentColor" stroke-width="1.4" />
+                </svg>
+              </span>
+              <p>
+                <strong>تنظیمات تازه هنوز اعمال نشده</strong>
+                <span>نتیجه‌های فعلی با تنظیمات قبلی ساخته شده‌اند.</span>
+              </p>
+              <button class="btn btn--tiny" id="bannerApply" type="button">اعمال و تبدیل</button>
+            </div>
+
+            <section class="card preview-card">
+              <header class="preview-head">
+                <div class="preview-head__title">
+                  <h2>پیش‌نمایش قبل و بعد</h2>
+                  <p id="selectedMeta">تصویر را انتخاب کن</p>
+                </div>
+                <div class="badges" id="selectedBadges"></div>
+              </header>
+
+              <div
+                class="compare"
+                id="compareStage"
+                role="slider"
+                tabindex="0"
+                aria-label="مقایسهٔ تصویر اصلی و خروجی WebP"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="50"
+              >
+                <div class="compare__layer compare__layer--before">
+                  <img id="beforeImage" alt="پیش‌نمایش تصویر اصلی" draggable="false" />
+                </div>
+                <div class="compare__layer compare__layer--after" id="afterLayer">
+                  <img id="afterImage" alt="پیش‌نمایش خروجی WebP" draggable="false" />
+                </div>
+                <span class="compare__tag compare__tag--before" id="beforeTag">قبل</span>
+                <span class="compare__tag compare__tag--after" id="afterTag">بعد</span>
+                <span class="compare__divider" id="compareDivider" aria-hidden="true">
+                  <span class="compare__grip">
+                    <svg viewBox="0 0 18 18" fill="none">
+                      <path d="m7.4 5.5-3 3.5 3 3.5m3.2-7 3 3.5-3 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                </span>
+
+                <div class="compare__state" id="compareState" hidden>
+                  <span class="spinner"></span>
+                  <span id="compareStateText">در حال تبدیل…</span>
+                </div>
+
+                <div class="compare__error" id="compareError" hidden>
+                  <span class="compare__error-icon" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none">
+                      <path d="M10 6v4.6M10 13.4v.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                      <circle cx="10" cy="10" r="7.2" stroke="currentColor" stroke-width="1.4" />
+                    </svg>
+                  </span>
+                  <strong id="compareErrorTitle">تبدیل انجام نشد</strong>
+                  <p id="compareErrorMessage"></p>
+                </div>
+              </div>
+
+              <div class="compare__foot">
+                <span class="dims"><i>قبل</i><b id="beforeDims">—</b></span>
+                <span class="compare__hint">دستگیره را بکش یا از کلیدهای جهت‌دار استفاده کن</span>
+                <span class="dims dims--after"><i>بعد</i><b id="afterDims">—</b></span>
+              </div>
+            </section>
+
+            <section class="card summary-card">
+              <div class="selected-row">
+                <span class="selected-thumb" id="selectedThumbWrap">
+                  <img id="selectedThumb" alt="" draggable="false" />
+                </span>
+                <div class="selected-info">
+                  <strong id="selectedName">—</strong>
+                  <span id="selectedInfo">—</span>
+                </div>
+                <div class="selected-actions">
+                  <span class="save-state" id="saveState" hidden>
+                    <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="m3.2 7.2 2.4 2.5 5.2-5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    ذخیره شد
+                  </span>
+                  <button class="icon-btn icon-btn--danger" id="removeButton" type="button" title="حذف این تصویر از صف" aria-label="حذف این تصویر از صف">
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="stats">
+                <div class="stat">
+                  <span class="stat__label">حجم خروجی</span>
+                  <strong class="stat__value" id="outSize">—</strong>
+                  <small class="stat__sub" id="outSub">—</small>
+                </div>
+                <div class="stat">
+                  <span class="stat__label">صرفه‌جویی واقعی</span>
+                  <strong class="stat__value stat__value--accent" id="savings">—</strong>
+                  <small class="stat__sub" id="savingsSub">—</small>
+                </div>
+                <div class="stat">
+                  <span class="stat__label">ابعاد نهایی</span>
+                  <strong class="stat__value stat__value--dims" id="outDims">—</strong>
+                  <small class="stat__sub" id="outQuality">—</small>
+                </div>
+              </div>
+
+              <p class="result-note" id="resultNote" hidden></p>
+
+              <div class="actions">
+                <button class="btn btn--primary" id="saveButton" type="button" disabled>
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M10 3.5v8.4m0 0 3-3m-3 3-3-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M4 13v1.6A1.9 1.9 0 0 0 5.9 16.5h8.2a1.9 1.9 0 0 0 1.9-1.9V13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+                  </svg>
+                  <span id="saveLabel">ذخیره فایل WebP</span>
+                </button>
+                <button class="btn btn--soft" id="saveAllButton" type="button" hidden>
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <rect x="6.6" y="2.8" width="9.6" height="9.6" rx="2.4" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M13.4 14.6v.2a2.2 2.2 0 0 1-2.2 2.2H5.4a2.2 2.2 0 0 1-2.2-2.2V9a2.2 2.2 0 0 1 2.2-2.2h.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                  <span id="saveAllLabel">ذخیره همه</span>
+                </button>
+                <button class="btn btn--ghost" id="addButton" type="button">
+                  <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="M9 3.7v10.6M3.7 9h10.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  </svg>
+                  افزودن تصویر
+                </button>
+              </div>
+            </section>
+
+            <section class="card queue-card" id="queueCard">
+              <header class="queue__head">
+                <div class="queue__title">
+                  <h2>صف تبدیل</h2>
+                  <span class="pill" id="queueCount">۰ تصویر</span>
+                </div>
+                <div class="queue__tools">
+                  <button class="icon-btn" id="queueAddButton" type="button" title="افزودن تصویر" aria-label="افزودن تصویر">
+                    <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                      <path d="M9 3.7v10.6M3.7 9h10.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                  </button>
+                  <button class="text-btn" id="reconvertButton" type="button" hidden>تبدیل دوباره</button>
+                  <button class="btn btn--danger-soft btn--compact" id="cancelButton" type="button" hidden>توقف</button>
+                </div>
+              </header>
+
+              <div class="queue__totals">
+                <span class="total"><i>مجموع ورودی</i><b id="totalIn">—</b></span>
+                <span class="total"><i>مجموع خروجی</i><b id="totalOut">—</b></span>
+                <span class="total total--accent"><i>صرفه‌جویی کلی</i><b id="totalSaved">—</b></span>
+              </div>
+
+              <div class="queue__progress" id="queueProgress" hidden>
+                <div class="queue__progress-track"><span id="progressFill"></span></div>
+                <span class="queue__progress-label" id="progressLabel">۰ از ۰</span>
+              </div>
+
+              <ul class="queue" id="queue" role="list"></ul>
+            </section>
+          </div>
+        </section>
+
+        <aside class="card settings" id="settingsPanel" aria-label="تنظیمات تبدیل">
+          <header class="settings__head">
+            <div>
+              <h2>تنظیمات تبدیل</h2>
+              <p>پیش‌فرض‌ها امن، سبک و متناسب با کیفیت‌اند</p>
+            </div>
+            <button class="icon-btn" id="resetSettings" type="button" title="بازگشت به پیش‌فرض" aria-label="بازگشت تنظیمات به پیش‌فرض">
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M4.2 6.3A6 6 0 1 1 3.3 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M4.1 2.9v3.6h3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </header>
+
+          <div class="settings__tabs" role="tablist" aria-label="دسته‌های تنظیمات">
+            <button class="tab is-active" id="tabQuality" type="button" role="tab" aria-selected="true" aria-controls="panelQuality" data-tab="quality">
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M4 14.5V9.8m3.4 4.7V5.6M10.7 14.5v-3.2M14 14.5v-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+              <span>کیفیت</span>
+            </button>
+            <button class="tab" id="tabDimensions" type="button" role="tab" aria-selected="false" aria-controls="panelDimensions" data-tab="dimensions" tabindex="-1">
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <rect x="2.7" y="4" width="12.6" height="10" rx="2.4" stroke="currentColor" stroke-width="1.5" />
+                <path d="M6 7.2h6M6 10.8h3.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              <span>ابعاد</span>
+            </button>
+            <button class="tab" id="tabColor" type="button" role="tab" aria-selected="false" aria-controls="panelColor" data-tab="color" tabindex="-1">
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M9 2.8c3.4 0 6.2 2.6 6.2 5.8 0 2.1-1.4 3.3-3 3.3h-1.1c-.8 0-1.4.6-1.4 1.4 0 .5.2.8.2 1.2 0 .8-.6 1.4-1.4 1.4A6.1 6.1 0 0 1 2.8 9.3c0-3.6 2.8-6.5 6.2-6.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+                <circle cx="6.4" cy="7.3" r="1" fill="currentColor" />
+                <circle cx="9.5" cy="5.9" r="1" fill="currentColor" />
+                <circle cx="5.8" cy="10.7" r="1" fill="currentColor" />
+              </svg>
+              <span>رنگ</span>
+            </button>
+            <button class="tab" id="tabProcess" type="button" role="tab" aria-selected="false" aria-controls="panelProcess" data-tab="process" tabindex="-1">
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M9 2.9a6.1 6.1 0 1 0 6.1 6.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M9 5.7v3.6l2.4 1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12.5 2.8v2.7h2.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span>پردازش</span>
+            </button>
+          </div>
+
+          <div class="settings__body">
+            <section class="panel is-active" id="panelQuality" role="tabpanel" aria-labelledby="tabQuality" data-panel="quality">
+              <div class="panel__intro">
+                <h3>کیفیت و حجم</h3>
+                <p>هدف را تعیین کن؛ موتور تبدیل بهترین ترکیب کیفیت و حجم را انتخاب می‌کند.</p>
+              </div>
+
+              <div class="segmented" role="radiogroup" aria-label="حالت کیفیت">
+                <label class="seg">
+                  <input type="radio" name="qualityMode" value="target" />
+                  <span>حجم هدف</span>
+                </label>
+                <label class="seg">
+                  <input type="radio" name="qualityMode" value="manual" />
+                  <span>کیفیت دستی</span>
+                </label>
+              </div>
+
+              <div class="field-group" id="targetGroup">
+                <label class="field" for="targetKB">
+                  <span class="field__label">حجم هدف</span>
+                  <span class="field__control">
+                    <input id="targetKB" type="number" min="10" max="5000" step="10" inputmode="numeric" />
+                    <span class="field__suffix">کیلوبایت</span>
+                  </span>
+                </label>
+                <div class="preset-row" id="targetPresets">
+                  <button class="preset" type="button" data-kb="50">۵۰</button>
+                  <button class="preset" type="button" data-kb="100">۱۰۰</button>
+                  <button class="preset" type="button" data-kb="200">۲۰۰</button>
+                  <button class="preset" type="button" data-kb="500">۵۰۰</button>
+                </div>
+                <p class="hint">اگر با کیفیت قابل‌قبول به هدف نرسیم، ابعاد به‌آرامی کم می‌شود؛ در حالت «اندازه دقیق» ابعاد دست نمی‌خورند.</p>
+              </div>
+
+              <div class="field-group" id="manualGroup" hidden>
+                <div class="slider-head">
+                  <label for="qualityRange">کیفیت خروجی</label>
+                  <output id="qualityValue" for="qualityRange">۸۲</output>
+                </div>
+                <input class="range" id="qualityRange" type="range" min="30" max="100" step="1" value="82" />
+                <div class="scale-row"><span>۳۰</span><span>۱۰۰</span></div>
+                <p class="hint">کیفیت ثابت می‌ماند؛ حجم کمتر کنترل می‌شود اما بیشتر یا کمتر از هدف در می‌آید.</p>
+              </div>
+
+              <div class="mini-note">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M8 2.5 13 5v3.2c0 3-2 4.7-5 5.8-3-1.1-5-2.8-5-5.8V5l5-2.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
+                </svg>
+                خروجی همیشه WebP است و هیچ داده‌ای از دستگاه خارج نمی‌شود.
+              </div>
+            </section>
+
+            <section class="panel" id="panelDimensions" role="tabpanel" aria-labelledby="tabDimensions" data-panel="dimensions" hidden>
+              <div class="panel__intro">
+                <h3>ابعاد خروجی</h3>
+                <p>ابعاد را دقیق تعیین کن؛ تصویر بدون کشیدگی داخل کادر می‌نشیند.</p>
+              </div>
+
+              <div class="resize-modes" role="radiogroup" aria-label="حالت ابعاد">
+                <label class="mode-card">
+                  <input type="radio" name="resizeMode" value="none" />
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="mode-card__body">
+                    <b>اندازه اصلی</b>
+                    <small>فقط فشرده‌سازی، بدون تغییر ابعاد</small>
+                  </span>
+                </label>
+                <label class="mode-card">
+                  <input type="radio" name="resizeMode" value="max" />
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="mode-card__body">
+                    <b>حداکثر ضلع</b>
+                    <small>کوچک‌کردن متناسب تا ضلع دلخواه</small>
+                  </span>
+                </label>
+                <label class="mode-card">
+                  <input type="radio" name="resizeMode" value="box" />
+                  <span class="radio-dot" aria-hidden="true"></span>
+                  <span class="mode-card__body">
+                    <b>اندازه دقیق</b>
+                    <small>کادر مشخص، مثل ۱۰۸۰ × ۷۲۰</small>
+                  </span>
+                </label>
+              </div>
+
+              <div class="field-group" id="maxEdgeGroup" hidden>
+                <label class="field" for="maxEdge">
+                  <span class="field__label">بزرگ‌ترین ضلع</span>
+                  <span class="field__control">
+                    <input id="maxEdge" type="number" min="64" max="12000" step="10" inputmode="numeric" />
+                    <span class="field__suffix">پیکسل</span>
+                  </span>
+                </label>
+                <div class="preset-row" id="maxEdgePresets">
+                  <button class="preset" type="button" data-edge="1280">۱۲۸۰</button>
+                  <button class="preset" type="button" data-edge="1920">۱۹۲۰</button>
+                  <button class="preset" type="button" data-edge="2560">۲۵۶۰</button>
+                  <button class="preset" type="button" data-edge="3840">۳۸۴۰</button>
+                </div>
+                <p class="hint">اگر تصویر از این عدد کوچک‌تر باشد بزرگ نمی‌شود.</p>
+              </div>
+
+              <div class="field-group" id="boxGroup" hidden>
+                <div class="box-size">
+                  <label class="field field--compact" for="boxWidth">
+                    <span class="field__label">عرض</span>
+                    <span class="field__control">
+                      <input id="boxWidth" type="number" min="16" max="8192" step="1" inputmode="numeric" />
+                      <span class="field__suffix">px</span>
+                    </span>
+                  </label>
+                  <span class="times" aria-hidden="true">×</span>
+                  <label class="field field--compact" for="boxHeight">
+                    <span class="field__label">ارتفاع</span>
+                    <span class="field__control">
+                      <input id="boxHeight" type="number" min="16" max="8192" step="1" inputmode="numeric" />
+                      <span class="field__suffix">px</span>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="preset-row" id="boxPresets">
+                  <button class="preset" type="button" data-w="1080" data-h="720">۱۰۸۰ × ۷۲۰</button>
+                  <button class="preset" type="button" data-w="1200" data-h="630">۱۲۰۰ × ۶۳۰</button>
+                  <button class="preset" type="button" data-w="1080" data-h="1080">۱۰۸۰ × ۱۰۸۰</button>
+                  <button class="preset" type="button" data-w="1920" data-h="1080">۱۹۲۰ × ۱۰۸۰</button>
+                </div>
+
+                <div class="option-row option-row--tight">
+                  <span>
+                    <b>حفظ نسبت ابعاد</b>
+                    <small>تصویر کشیده یا دفرمه نمی‌شود.</small>
+                  </span>
+                  <label class="toggle">
+                    <input type="checkbox" id="keepAspect" />
+                    <span></span>
+                  </label>
+                </div>
+
+                <div class="fit-block" id="fitGroup">
+                  <div class="segmented segmented--small" role="radiogroup" aria-label="نحوهٔ قرارگیری در کادر">
+                    <label class="seg">
+                      <input type="radio" name="fit" value="contain" />
+                      <span>جای دادن کامل</span>
+                    </label>
+                    <label class="seg">
+                      <input type="radio" name="fit" value="cover" />
+                      <span>پرکردن کادر</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="position-block" id="positionGroup">
+                  <div class="mini-head">
+                    <span>جای تصویر در کادر</span>
+                    <small id="positionLabel">وسط</small>
+                  </div>
+                  <div class="position-grid" id="positionGrid" role="radiogroup" aria-label="جای تصویر در کادر">
+                    <button class="pos" type="button" data-pos="northwest" role="radio" aria-checked="false" aria-label="بالا-چپ" title="بالا-چپ"><span></span></button>
+                    <button class="pos" type="button" data-pos="north" role="radio" aria-checked="false" aria-label="بالا" title="بالا"><span></span></button>
+                    <button class="pos" type="button" data-pos="northeast" role="radio" aria-checked="false" aria-label="بالا-راست" title="بالا-راست"><span></span></button>
+                    <button class="pos" type="button" data-pos="west" role="radio" aria-checked="false" aria-label="چپ" title="چپ"><span></span></button>
+                    <button class="pos" type="button" data-pos="centre" role="radio" aria-checked="false" aria-label="وسط" title="وسط"><span></span></button>
+                    <button class="pos" type="button" data-pos="east" role="radio" aria-checked="false" aria-label="راست" title="راست"><span></span></button>
+                    <button class="pos" type="button" data-pos="southwest" role="radio" aria-checked="false" aria-label="پایین-چپ" title="پایین-چپ"><span></span></button>
+                    <button class="pos" type="button" data-pos="south" role="radio" aria-checked="false" aria-label="پایین" title="پایین"><span></span></button>
+                    <button class="pos" type="button" data-pos="southeast" role="radio" aria-checked="false" aria-label="پایین-راست" title="پایین-راست"><span></span></button>
+                  </div>
+                </div>
+
+                <div class="background-block" id="backgroundGroup">
+                  <div class="mini-head">
+                    <span>پس‌زمینهٔ کادر</span>
+                    <small id="backgroundHint">برای نواحی خالی</small>
+                  </div>
+                  <div class="bg-row">
+                    <label class="color-field" title="انتخاب رنگ پس‌زمینه">
+                      <input type="color" id="bgColor" value="#ffffff" aria-label="رنگ پس‌زمینه" />
+                      <span id="bgColorLabel" dir="ltr">#FFFFFF</span>
+                    </label>
+                    <button class="chip-btn" id="transparentButton" type="button">شفاف</button>
+                  </div>
+                </div>
+
+                <p class="hint" id="boxHint">تصویر متناسب در کادر جای می‌گیرد و نواحی خالی با پس‌زمینه پر می‌شوند.</p>
+                <p class="warning-note warning-note--soft" id="stretchWarning" hidden>حفظ نسبت خاموش است؛ تصویر برای پرکردن کادر کشیده می‌شود.</p>
+              </div>
+            </section>
+
+            <section class="panel" id="panelColor" role="tabpanel" aria-labelledby="tabColor" data-panel="color" hidden>
+              <div class="panel__intro">
+                <h3>رنگ، شفافیت و اطلاعات</h3>
+                <p>ظاهر تصویر و داده‌های همراه آن را کنترل کن.</p>
+              </div>
+
+              <div class="option-row">
+                <span>
+                  <b>حفظ شفافیت PNG</b>
+                  <small>نواحی شفاف در خروجی WebP حفظ می‌شوند.</small>
+                </span>
+                <label class="toggle">
+                  <input type="checkbox" id="preserveAlpha" />
+                  <span></span>
+                </label>
+              </div>
+
+              <div class="option-row">
+                <span>
+                  <b>چرخش خودکار بر اساس EXIF</b>
+                  <small>جهت عکس‌های گوشی و دوربین درست نمایش داده می‌شود.</small>
+                </span>
+                <label class="toggle">
+                  <input type="checkbox" id="autoOrient" />
+                  <span></span>
+                </label>
+              </div>
+
+              <label class="field field--select" for="iccSelect">
+                <span class="field__label">مدیریت پروفایل رنگ ICC</span>
+                <span class="field__control">
+                  <select id="iccSelect">
+                    <option value="srgb">تبدیل امن به sRGB (پیشنهادی)</option>
+                    <option value="keep">حفظ پروفایل اصلی</option>
+                    <option value="strip">حذف پروفایل رنگ</option>
+                  </select>
+                </span>
+              </label>
+              <p class="hint" id="iccHint">رنگ‌ها با مدیریت درست پروفایل به sRGB تبدیل می‌شوند تا در همه‌جا یکسان دیده شوند.</p>
+
+              <div class="option-row">
+                <span>
+                  <b>حذف متادیتا</b>
+                  <small>اطلاعات EXIF، XMP و موقعیت مکانی (GPS)</small>
+                </span>
+                <label class="toggle">
+                  <input type="checkbox" id="stripMetadata" />
+                  <span></span>
+                </label>
+              </div>
+              <p class="warning-note" id="metadataNote">با حذف متادیتا، اطلاعات مکانی احتمالی عکس هم پاک می‌شود.</p>
+            </section>
+
+            <section class="panel" id="panelProcess" role="tabpanel" aria-labelledby="tabProcess" data-panel="process" hidden>
+              <div class="panel__intro">
+                <h3>پردازش و ایمنی</h3>
+                <p>تعادل بین سرعت، حافظه و رفتار فایل‌ها را تنظیم کن.</p>
+              </div>
+
+              <div class="field-group">
+                <div class="slider-head">
+                  <label for="concurrencyRange">پردازش هم‌زمان</label>
+                  <output id="concurrencyValue" for="concurrencyRange">۲ فایل</output>
+                </div>
+                <input class="range" id="concurrencyRange" type="range" min="1" max="4" step="1" value="2" />
+                <div class="scale-row"><span>۱</span><span>۴</span></div>
+                <p class="hint" id="concurrencyHint">پردازش موازی بیشتر سریع‌تر است، اما حافظهٔ بیشتری می‌گیرد.</p>
+              </div>
+
+              <div class="option-row">
+                <span>
+                  <b>رد خروجی بزرگ‌تر</b>
+                  <small>اگر WebP از فایل اصلی بزرگ‌تر شد، ذخیره نشود.</small>
+                </span>
+                <label class="toggle">
+                  <input type="checkbox" id="rejectLarger" />
+                  <span></span>
+                </label>
+              </div>
+
+              <div class="option-row option-row--danger" id="replaceRow">
+                <span>
+                  <b>جایگزینی فایل اصلی</b>
+                  <small>نسخهٔ WebP ذخیره و فایل اصلی به سطل بازیافت منتقل می‌شود.</small>
+                </span>
+                <label class="toggle toggle--danger">
+                  <input type="checkbox" id="replaceOriginal" />
+                  <span></span>
+                </label>
+              </div>
+              <p class="warning-note warning-note--danger" id="replaceNote" hidden>با فعال‌بودن این گزینه، فایل اصلی پس از ذخیره به سطل بازیافت ویندوز می‌رود.</p>
+
+              <div class="limits">
+                <label class="field field--compact" for="maxInputMB">
+                  <span class="field__label">حداکثر حجم ورودی</span>
+                  <span class="field__control">
+                    <input id="maxInputMB" type="number" min="1" max="200" step="1" inputmode="numeric" />
+                    <span class="field__suffix">مگابایت</span>
+                  </span>
+                </label>
+                <label class="field field--compact" for="maxInputEdge">
+                  <span class="field__label">حداکثر ضلع ورودی</span>
+                  <span class="field__control">
+                    <input id="maxInputEdge" type="number" min="256" max="20000" step="100" inputmode="numeric" />
+                    <span class="field__suffix">پیکسل</span>
+                  </span>
+                </label>
+              </div>
+              <p class="hint">فایل‌های بزرگ‌تر از این سقف‌ها وارد پردازش نمی‌شوند تا حافظه پر نشود.</p>
+            </section>
+          </div>
+
+          <footer class="settings__foot">
+            <button class="btn btn--primary btn--block" id="applySettings" type="button">ذخیره تنظیمات</button>
+            <p class="settings__hint" id="settingsHint">تنظیمات به‌صورت خودکار ذخیره می‌شود.</p>
+          </footer>
+        </aside>
+      </main>
+
+      <footer class="page-foot">
+        <span class="page-foot__brand">
+          <img src="assets/logo.svg" alt="" />
+          پیکسل یار
+        </span>
+        <span class="page-foot__dot" aria-hidden="true"></span>
+        <span class="page-foot__social">
+          <svg class="page-foot__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5.2" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" />
+          </svg>
+          <span>اینستاگرام:</span>
+          <button class="mail-link" id="instagramButton" type="button" dir="ltr" title="باز کردن اینستاگرام">@mnabishahzamani</button>
+        </span>
+        <span class="page-foot__dot" aria-hidden="true"></span>
+        <span class="page-foot__social">
+          <svg class="page-foot__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.54 2.87 8.39 6.84 9.75.5.1.68-.22.68-.48 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.64-1.36-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.8-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.59.69.48A10.03 10.03 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+          </svg>
+          <span>طراحی و توسعه:</span>
+          <button class="mail-link" id="githubButton" type="button" dir="ltr" title="باز کردن گیت‌هاب">@mnabishahzamani-dev</button>
+        </span>
+      </footer>
+    </div>
+
+    <div class="drop-overlay" id="dropOverlay" hidden>
+      <div class="drop-overlay__card">
+        <span class="drop-overlay__icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 22V7m0 0-5.5 5.5M16 7l5.5 5.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M6 19.5v3A3.5 3.5 0 0 0 9.5 26h13a3.5 3.5 0 0 0 3.5-3.5v-3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+          </svg>
+        </span>
+        <strong>رهایش کن!</strong>
+        <span>تصاویر برای افزودن به صف آماده‌اند</span>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+      <span class="toast__icon" aria-hidden="true">
+        <svg class="toast__check" viewBox="0 0 20 20" fill="none">
+          <path d="m5 10.2 3.2 3.3L15 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <svg class="toast__alert" viewBox="0 0 20 20" fill="none">
+          <path d="M10 5.9v5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+          <circle cx="10" cy="14.2" r="1.1" fill="currentColor" />
+        </svg>
+      </span>
+      <div class="toast__body">
+        <strong id="toastTitle"></strong>
+        <span id="toastMessage"></span>
+      </div>
+      <button class="toast__action" id="toastAction" type="button" hidden></button>
+      <button class="toast__close" id="toastClose" type="button" aria-label="بستن پیام">
+        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="m3.5 3.5 7 7m0-7-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    <template id="queueTemplate">
+      <li class="queue-item">
+        <button class="queue-item__select" type="button">
+          <span class="queue-item__thumb"><img alt="" draggable="false" /></span>
+          <span class="queue-item__info">
+            <strong class="queue-item__name"></strong>
+            <span class="queue-item__meta"></span>
+          </span>
+        </button>
+        <span class="queue-item__sizes"></span>
+        <span class="queue-item__status">
+          <span class="mini-spinner" aria-hidden="true"></span>
+          <span class="queue-item__status-text"></span>
+        </span>
+        <span class="queue-item__saved" hidden aria-label="ذخیره شد">
+          <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="m3.2 7.2 2.4 2.5 5.2-5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <div class="queue-item__actions">
+          <button class="icon-btn queue-item__save" type="button" data-act="save" title="ذخیره WebP">
+            <svg class="act-save" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M9 3v7.4m0 0 2.7-2.7M9 10.4 6.3 7.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3.6 11.6v1.3a1.7 1.7 0 0 0 1.7 1.7h7.4a1.7 1.7 0 0 0 1.7-1.7v-1.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <svg class="act-retry" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M4.2 6.3A6 6 0 1 1 3.3 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              <path d="M4.1 2.9v3.6h3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <svg class="act-spinner" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-opacity=".22" stroke-width="2" />
+              <path d="M9 3a6 6 0 0 1 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+          <button class="icon-btn icon-btn--danger queue-item__remove" type="button" data-act="remove" title="حذف از صف" aria-label="حذف از صف">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </li>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
